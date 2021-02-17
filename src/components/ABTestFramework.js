@@ -32,6 +32,7 @@ let initialState = {
 }
 
 const myRedcucer = (state, action) => {
+  debugger
   switch (action.type) {
     case 'CHANGE_COUNRTY':
       let selected = state.countries.filter((item) => item.name === action.country);
@@ -41,7 +42,9 @@ const myRedcucer = (state, action) => {
         selectedCountry: action.country,
         selectedTestimonies: testimonials
       };
-
+    case 'update':
+      debugger
+      return state;
     default:
       return state;
   }
@@ -52,10 +55,14 @@ const ABTesting = () => {
 
   useEffect(() => {
     let localStore = localStorage.getItem('state');
-    if (localStore == null) {
+    console.log('use effect local', localStore);
+    if (!localStore) {
+      debugger
+      //first render
       localStorage.setItem('state', JSON.stringify(initialState))
     } else {
       initialState = JSON.parse(localStorage.getItem('state'));
+      dispatch({ type: 'update' })
     }
 
   })
@@ -83,8 +90,8 @@ const ABTesting = () => {
     return (
       <div className="container">
         <div className="row">
-          <div className="input-field col s12 m4">
-            <select className="browser-default" value={state.selectedCountry || country} onChange={(e) => handleCoutryChange(e)}>
+          <div className="input-field col s12 m5 no-padding-1">
+            <select className="" value={state.selectedCountry || country} onChange={(e) => handleCoutryChange(e)}>
               <option value="" disabled defaultValue>Choose country</option>
               {countryList.map(item => {
                 return (<option key={item} value={item}>{item}</option>)
@@ -100,12 +107,12 @@ const ABTesting = () => {
   //Component for testimonials
   function Testimonies({ testimonyList }) {
     return (
-      <div className="row container">
+      <div className="container row">
         {testimonyList.length > 0 ? testimonyList.map(testimony =>
-          <div className="col m5 s10 card testimony-container" key={testimony.id}>
+          <div className="col m5 s12 card testimony-container" key={testimony.id}>
             <Testimony testimony={testimony} />
           </div>
-        ) : 'No Testimony'}
+        ) : country ? <span className="type-error">No testimony found</span> : null}
       </div>
     )
   }
@@ -116,7 +123,8 @@ const ABTesting = () => {
       <div className="card blue-grey darken-1">
         <div className="card-content white-text">
           <span className="card-title">{testimony.id}</span>
-          <p className="card-body">{testimony.text}</p>
+          <hr></hr>
+          <p className="card-body overflow">{testimony.text}</p>
         </div>
       </div>
     )

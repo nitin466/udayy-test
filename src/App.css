@@ -1,6 +1,9 @@
-.App {
-  text-align: center;
+body {
   background-color: aliceblue;
+}
+
+.App {
+  /* text-align: center; */
 }
 
 .App-logo {
@@ -44,12 +47,13 @@
 .type-error {
   color:red;
   font-size: inherit;
+  float: left;
 }
 .card-body {
   height: 6rem;
 }
 .testimony-container {
-  margin: 1rem;
+  margin-right: 4rem;
 }
 .add-new {
   border: 4px solid #cce6ff;
@@ -63,4 +67,16 @@
 nav .brand-logo.left{
   left: 2rem;
   padding: 0;
+}
+.title {
+  border-bottom: 1px solid white;
+}
+.no-padding-1 {
+  padding-left: 0px !important;
+}
+select {
+  display: inline !important;
+}
+.overflow {
+overflow-y: scroll
 }

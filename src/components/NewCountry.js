@@ -9,16 +9,21 @@ const AddCountry = () => {
   const [disableCountry, setDisableCountry] = useState(false)
 
   const isValid = (e) => {
-    let isValid = /^[a-zA-Z]+$/.test(e.target.value);
+    var isValid = null;
+    if (e.target.value) {
+      isValid = /^[a-zA-Z]+$/.test(e.target.value);
+    }
     return isValid;
   }
   const inputHandler = (e) => {
     //chekck if not character
     if (isValid(e)) {
       setIsErroneous(false);
-      setCountry(e.target.value)
+      setCountry(e.target.value);
     } else {
       setIsErroneous(true);
+      setCountry(e.target.value);
+
     }
   }
 
@@ -51,29 +56,29 @@ const AddCountry = () => {
     <>
       <div className="row container add-new">
         <form className="col s12 m10" onSubmit={testimonyAddHandler}>
-          {isErroneous}
           <div className="row">
             <div className="input-field col s12 m6">
               <label htmlFor="country" className="active">Country Name</label>
-              <input placeholder="Please provide the name of the country"
+              <input placeholder="Please enter name "
                 id="coutry" type="text" value={country}
                 className="validate" onChange={inputHandler}
                 disabled={disableCountry} />
               {isErroneous ? <span className="type-error">
-                {"Please provide albhabets only"}</span> : null}
-            </div>
-            <div className="row">
-              <div className="input-field col s12 m10">
-                <label htmlFor="testimony" className="active">Testimony</label>
-                <textarea id="testimony" className="materialize-textarea"
-                  value={testimony || ""}
-                  onChange={(e) => setTestimony(e.target.value)}></textarea>
-              </div>
-              <div className="col s10 m2">
-                <button className="btn orange lighten-1 z-depth-2" disabled={!country || !testimony}>Add</button>
-              </div>
+                {"Please enter alphabets only"}</span> : null}
             </div>
           </div>
+          <div className="row">
+            <div className="input-field col s12 m6">
+              <label htmlFor="testimony" className="active">Testimony</label>
+              <textarea id="testimony" className="materialize-textarea"
+                value={testimony || ""}
+                onChange={(e) => setTestimony(e.target.value)}></textarea>
+            </div>
+            <div className="">
+              <button className="btn orange lighten-1 z-depth-1 col s12 m2 input-field " disabled={(!country || !testimony) || isErroneous}>Add</button>
+            </div>
+          </div>
+          {/* </div> */}
         </form>
       </div>
       {testimonyList.length ? <AddedTestimony testimonyList={testimonyList} /> : null}
@@ -82,18 +87,22 @@ const AddCountry = () => {
   )
 
 
-
   function AddedTestimony({ testimonyList }) {
     return (
-      <div className="container row">
-        <h5 className="card-title left-align">Testimonials </h5>
+      <div className="container">
+        <h5 className="card-title">Testimonials </h5>
         <hr></hr>
+        <div className="row">
+          {testimonyList.map((item) =>
+            <div className="col m5 s12 card testimony-container" key={item.id}>
+              <Testimony testimony={item} />
+            </div>
+          )}
+        </div>
 
-        {testimonyList.map((item) =>
-          <div className="col m5 s10 card testimony-container" key={item.id}>
-            <Testimony testimony={item} />
-          </div>)}
-        <button className="btn fixed-action-btn btn-large green lighten-1 z-depth-2" onClick={submitHandler}>Submit</button>
+        <div className="row">
+          <button className="btn green right col s12 m input-field" onClick={submitHandler}>Submit</button>
+        </div>
       </div>
 
     )
@@ -104,8 +113,8 @@ function Testimony({ testimony }) {
   return (
     <div className="card blue-grey darken-1" >
       <div className="card-content white-text">
-        <span className="card-title">{testimony.id}</span>
-        <p className="card-body">{testimony.text}</p>
+        <span className="card-title">{testimony.id}</span><hr></hr>
+        <p className="card-body overflow">{testimony.text}</p>
       </div>
     </div>
   )
